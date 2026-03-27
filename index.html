@@ -1,0 +1,1140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aditi 🌹</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Pinyon+Script&family=Jost:wght@200;300;400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --rose: #b5293f;
+        --roseDark: #7a1528;
+        --roseLight: #f2c4cc;
+        --gold: #d4a843;
+        --goldLight: #f5e6b8;
+        --goldDark: #8a6a1a;
+        --cream: #fdf8f0;
+        --deepNight: #0d0509;
+        --midNight: #1a0b10;
+        --ink: #2a0f16;
+        --mist: rgba(253, 248, 240, 0.07);
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--deepNight);
+        font-family: "Jost", sans-serif;
+        color: var(--cream);
+        overflow-x: hidden;
+        cursor: none;
+      }
+
+      /* ── CURSOR ── */
+      #cur {
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        mix-blend-mode: difference;
+      }
+      #cur .dot {
+        width: 8px;
+        height: 8px;
+        background: #fff;
+        border-radius: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+      }
+      #cur .ring {
+        width: 36px;
+        height: 36px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        transition: all 0.25s ease;
+      }
+
+      /* ── CANVAS LAYERS ── */
+      #bgCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+      }
+      #fxCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 50;
+        pointer-events: none;
+      }
+
+      /* ── LOADING SCREEN ── */
+      #loader {
+        position: fixed;
+        inset: 0;
+        background: var(--deepNight);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition:
+          opacity 1.2s ease,
+          transform 1.2s ease;
+      }
+      #loader.out {
+        opacity: 0;
+        transform: scale(1.05);
+        pointer-events: none;
+      }
+      .loader-ring {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 1px solid rgba(212, 168, 67, 0.2);
+        border-top-color: var(--gold);
+        animation: spin 1.2s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .loader-txt {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        color: var(--gold);
+        margin-top: 24px;
+        font-size: 1rem;
+        letter-spacing: 0.15em;
+        opacity: 0.7;
+      }
+
+      /* ── SECTIONS ── */
+      section {
+        position: relative;
+        z-index: 10;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 24px;
+      }
+
+      /* ── SECTION 1: CINEMATIC OPENER ── */
+      #s1 {
+        overflow: hidden;
+      }
+      .s1-bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 80% 60% at 50% 40%,
+          rgba(181, 41, 63, 0.12) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .s1-date {
+        font-family: "Jost", sans-serif;
+        font-weight: 200;
+        font-size: 0.72rem;
+        letter-spacing: 0.5em;
+        color: var(--gold);
+        text-transform: uppercase;
+        opacity: 0;
+        animation: fadeUp 1s ease 1s forwards;
+      }
+      .s1-name {
+        font-family: "Pinyon Script", cursive;
+        font-size: clamp(5rem, 18vw, 12rem);
+        line-height: 0.9;
+        background: linear-gradient(
+          160deg,
+          #fdf8f0 0%,
+          #d4a843 40%,
+          #b5293f 70%,
+          #fdf8f0 100%
+        );
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation:
+          fadeUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both,
+          shimmer 6s ease-in-out infinite 2s;
+      }
+      @keyframes shimmer {
+        0%,
+        100% {
+          background-position: 0% 0%;
+        }
+        50% {
+          background-position: 100% 100%;
+        }
+      }
+      .s1-wish {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: clamp(1rem, 3.5vw, 1.8rem);
+        font-weight: 400;
+        color: rgba(253, 248, 240, 0.65);
+        letter-spacing: 0.06em;
+        margin-top: 8px;
+        opacity: 0;
+        animation: fadeUp 1s ease 1.4s forwards;
+      }
+      .s1-line {
+        width: 1px;
+        height: 0;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          var(--gold),
+          transparent
+        );
+        margin: 40px auto;
+        animation: growLine 1.5s ease 1.8s forwards;
+      }
+      @keyframes growLine {
+        to {
+          height: 80px;
+        }
+      }
+      .scroll-hint {
+        font-size: 0.68rem;
+        letter-spacing: 0.4em;
+        text-transform: uppercase;
+        color: rgba(212, 168, 67, 0.4);
+        opacity: 0;
+        animation:
+          fadeUp 1s ease 2.5s forwards,
+          bob 2s ease-in-out infinite 3.5s;
+      }
+      @keyframes bob {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(6px);
+        }
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── SECTION 2: LOVE LETTER ── */
+      #s2 {
+        background: linear-gradient(
+          to bottom,
+          var(--deepNight),
+          var(--midNight),
+          var(--deepNight)
+        );
+      }
+      .letter-wrap {
+        max-width: 680px;
+        width: 100%;
+        border: 1px solid rgba(212, 168, 67, 0.18);
+        background: linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.025),
+          rgba(255, 255, 255, 0.005)
+        );
+        padding: 64px 56px;
+        position: relative;
+        clip-path: polygon(
+          0 0,
+          calc(100% - 30px) 0,
+          100% 30px,
+          100% 100%,
+          30px 100%,
+          0 calc(100% - 30px)
+        );
+      }
+      .letter-wrap::before,
+      .letter-wrap::after {
+        content: "";
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-color: rgba(212, 168, 67, 0.35);
+        border-style: solid;
+      }
+      .letter-wrap::before {
+        top: 14px;
+        left: 14px;
+        border-width: 1px 0 0 1px;
+      }
+      .letter-wrap::after {
+        bottom: 14px;
+        right: 14px;
+        border-width: 0 1px 1px 0;
+      }
+      .letter-tag {
+        font-size: 0.65rem;
+        letter-spacing: 0.5em;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-weight: 300;
+        margin-bottom: 28px;
+        opacity: 0.7;
+      }
+      .letter-para {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1rem, 2.5vw, 1.18rem);
+        line-height: 2;
+        color: rgba(253, 248, 240, 0.8);
+        font-weight: 400;
+        margin-bottom: 20px;
+      }
+      .letter-para em {
+        color: var(--roseLight);
+        font-style: italic;
+      }
+      .letter-sign {
+        font-family: "Pinyon Script", cursive;
+        font-size: 2.4rem;
+        color: var(--gold);
+        margin-top: 32px;
+        display: block;
+      }
+
+      /* ── SECTION 3: MEMORY CONSTELLATION ── */
+      #s3 {
+        background: var(--deepNight);
+      }
+      .s3-title {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: clamp(1.8rem, 5vw, 3rem);
+        color: var(--cream);
+        margin-bottom: 16px;
+        text-align: center;
+      }
+      .s3-sub {
+        font-size: 0.78rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: rgba(212, 168, 67, 0.5);
+        text-align: center;
+        margin-bottom: 60px;
+      }
+      .memories {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        max-width: 900px;
+        width: 100%;
+      }
+      .mem-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(212, 168, 67, 0.12);
+        padding: 28px 24px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform 0.4s ease,
+          border-color 0.4s ease,
+          background 0.4s ease;
+        cursor: none;
+      }
+      .mem-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(212, 168, 67, 0.4);
+        background: rgba(181, 41, 63, 0.08);
+      }
+      .mem-card::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          var(--rose),
+          transparent
+        );
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+      }
+      .mem-card:hover::after {
+        transform: scaleX(1);
+      }
+      .mem-icon {
+        font-size: 2.2rem;
+        display: block;
+        margin-bottom: 14px;
+        filter: grayscale(0.3);
+      }
+      .mem-title {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 1.05rem;
+        color: var(--cream);
+        margin-bottom: 8px;
+      }
+      .mem-desc {
+        font-size: 0.82rem;
+        color: rgba(253, 248, 240, 0.45);
+        line-height: 1.7;
+        font-weight: 200;
+      }
+
+      /* ── SECTION 4: REASONS I LOVE YOU ── */
+      #s4 {
+        background: linear-gradient(to bottom, var(--deepNight), #120509);
+      }
+      .reasons-title {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: clamp(1.8rem, 5vw, 3rem);
+        color: var(--cream);
+        text-align: center;
+        margin-bottom: 60px;
+      }
+      .reasons-grid {
+        max-width: 800px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+      }
+      .reason {
+        padding: 32px 28px;
+        border: 0.5px solid rgba(212, 168, 67, 0.1);
+        position: relative;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s ease;
+      }
+      .reason.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reason:hover {
+        background: rgba(181, 41, 63, 0.06);
+      }
+      .reason-num {
+        font-family: "Pinyon Script", cursive;
+        font-size: 3.5rem;
+        color: rgba(212, 168, 67, 0.12);
+        position: absolute;
+        top: 8px;
+        right: 16px;
+        line-height: 1;
+        pointer-events: none;
+      }
+      .reason-txt {
+        font-size: 0.95rem;
+        line-height: 1.9;
+        color: rgba(253, 248, 240, 0.7);
+        font-weight: 300;
+        position: relative;
+        z-index: 1;
+      }
+      .reason-txt strong {
+        color: var(--roseLight);
+        font-weight: 400;
+      }
+
+      /* ── SECTION 5: INTERACTIVE WISH ── */
+      #s5 {
+        background: linear-gradient(to bottom, #120509, var(--deepNight));
+      }
+      .wish-center {
+        text-align: center;
+        max-width: 600px;
+      }
+      .wish-heading {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: clamp(1.6rem, 4vw, 2.5rem);
+        color: var(--cream);
+        margin-bottom: 16px;
+      }
+      .wish-sub {
+        font-size: 0.82rem;
+        color: rgba(253, 248, 240, 0.4);
+        letter-spacing: 0.2em;
+        margin-bottom: 48px;
+        text-transform: uppercase;
+      }
+      .cake {
+        font-size: 7rem;
+        display: inline-block;
+        animation: float 3s ease-in-out infinite;
+        cursor: none;
+        filter: drop-shadow(0 0 30px rgba(181, 41, 63, 0.4));
+        transition: transform 0.2s;
+      }
+      .cake:active {
+        transform: scale(0.92);
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-14px);
+        }
+      }
+      .wish-instruction {
+        font-size: 0.8rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: rgba(212, 168, 67, 0.45);
+        margin-top: 24px;
+      }
+      .sparkle-count {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 1.5rem;
+        color: var(--gold);
+        margin-top: 16px;
+        min-height: 2rem;
+      }
+      .final-msg {
+        font-family: "Pinyon Script", cursive;
+        font-size: 2.8rem;
+        color: var(--roseLight);
+        margin-top: 32px;
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .final-msg.show {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      /* ── DIVIDERS ── */
+      .gold-divider {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        width: 240px;
+        margin: 0 auto 40px;
+      }
+      .gdl {
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          rgba(212, 168, 67, 0.4)
+        );
+      }
+      .gdr {
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(
+          to left,
+          transparent,
+          rgba(212, 168, 67, 0.4)
+        );
+      }
+      .gdd {
+        width: 7px;
+        height: 7px;
+        background: var(--gold);
+        transform: rotate(45deg);
+        flex-shrink: 0;
+      }
+
+      /* ── FLYING HEARTS ── */
+      .fly-heart {
+        position: fixed;
+        pointer-events: none;
+        z-index: 200;
+        font-size: 1.4rem;
+        animation: flyOut 1.4s ease forwards;
+      }
+      @keyframes flyOut {
+        0% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
+            scale(0.3);
+        }
+      }
+
+      /* ── SCROLL REVEAL ── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.9s ease,
+          transform 0.9s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 600px) {
+        .letter-wrap {
+          padding: 44px 28px;
+        }
+        .reasons-grid {
+          grid-template-columns: 1fr;
+        }
+        .memories {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- CURSOR -->
+    <div id="cur">
+      <div class="dot"></div>
+      <div class="ring" id="cring"></div>
+    </div>
+
+    <!-- CANVASES -->
+    <canvas id="bgCanvas"></canvas>
+    <canvas id="fxCanvas"></canvas>
+
+    <!-- LOADER -->
+    <div id="loader">
+      <div class="loader-ring"></div>
+      <p class="loader-txt">preparing something special…</p>
+    </div>
+
+    <!-- ═══ S1: OPENER ═══ -->
+    <section id="s1">
+      <div class="s1-bg"></div>
+      <p class="s1-date" id="todayDate"></p>
+      <h1 class="s1-name">Aditi</h1>
+      <p class="s1-wish">Happy Birthday, my love</p>
+      <div class="s1-line"></div>
+      <p class="scroll-hint">↓ &nbsp; scroll to begin &nbsp; ↓</p>
+    </section>
+
+    <!-- ═══ S2: LETTER ═══ -->
+    <section id="s2">
+      <div class="letter-wrap reveal">
+        <p class="letter-tag">A letter from the heart</p>
+
+        <div class="gold-divider">
+          <div class="gdl"></div>
+          <div class="gdd"></div>
+          <div class="gdr"></div>
+        </div>
+
+        <p class="letter-para">
+          My dearest <em>Aditi</em>, on this beautiful day that belongs entirely
+          to you — I want you to know that your existence has made the whole
+          world softer, warmer, and more alive.
+        </p>
+        <p class="letter-para">
+          You are the kind of person who turns ordinary moments into
+          <em>memories</em> — a laugh that echoes, a glance that says
+          everything, a presence that makes every room feel like home.
+        </p>
+        <p class="letter-para">
+          Today, the universe celebrates the day it finally got
+          <em>you</em> right. May every wish your heart carries bloom like
+          roses, and may this year return to you every bit of joy you give so
+          freely.
+        </p>
+        <p class="letter-para">
+          You are <em>endlessly</em>, completely, wholly loved — not just today,
+          but in every quiet moment between then and forever.
+        </p>
+
+        <div class="gold-divider" style="margin-top: 36px; margin-bottom: 8px">
+          <div class="gdl"></div>
+          <div class="gdd"></div>
+          <div class="gdr"></div>
+        </div>
+        <span class="letter-sign">With all of my love 🌹</span>
+      </div>
+    </section>
+
+    <!-- ═══ S3: MEMORIES ═══ -->
+    <section id="s3">
+      <h2 class="s3-title reveal">Things I treasure about you</h2>
+      <p class="s3-sub reveal">a small collection of infinities</p>
+
+      <div class="memories">
+        <div class="mem-card reveal">
+          <span class="mem-icon">🌙</span>
+          <p class="mem-title">Your laugh at midnight</p>
+          <p class="mem-desc">
+            The way it fills a whole room and makes everything feel lighter than
+            it was before.
+          </p>
+        </div>
+        <div class="mem-card reveal">
+          <span class="mem-icon">🌸</span>
+          <p class="mem-title">How you love deeply</p>
+          <p class="mem-desc">
+            Without conditions, without hesitation — a rare and extraordinary
+            thing.
+          </p>
+        </div>
+        <div class="mem-card reveal">
+          <span class="mem-icon">✨</span>
+          <p class="mem-title">Your spark</p>
+          <p class="mem-desc">
+            The way your eyes light up when you talk about things you care
+            about. Pure magic.
+          </p>
+        </div>
+        <div class="mem-card reveal">
+          <span class="mem-icon">🕊️</span>
+          <p class="mem-title">Your quiet strength</p>
+          <p class="mem-desc">
+            You face hard days with a grace that leaves me in awe every single
+            time.
+          </p>
+        </div>
+        <div class="mem-card reveal">
+          <span class="mem-icon">🌹</span>
+          <p class="mem-title">Every small moment</p>
+          <p class="mem-desc">
+            Coffee mornings, silly arguments, long silences — all of it,
+            perfect.
+          </p>
+        </div>
+        <div class="mem-card reveal">
+          <span class="mem-icon">💫</span>
+          <p class="mem-title">Just being you</p>
+          <p class="mem-desc">
+            No reason needed. You are enough — more than enough — simply as you
+            are.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ S4: REASONS ═══ -->
+    <section id="s4">
+      <h2 class="reasons-title reveal">Reasons I love you</h2>
+      <div class="reasons-grid">
+        <div class="reason">
+          <span class="reason-num">01</span>
+          <p class="reason-txt">
+            The way you <strong>make ordinary Tuesday evenings</strong> feel
+            like the best nights of my life.
+          </p>
+        </div>
+        <div class="reason">
+          <span class="reason-num">02</span>
+          <p class="reason-txt">
+            Your <strong>kindness</strong> — the gentle, instinctive kind that
+            you don't even notice you carry.
+          </p>
+        </div>
+        <div class="reason">
+          <span class="reason-num">03</span>
+          <p class="reason-txt">
+            How you <strong>know what I mean</strong> before I even finish
+            saying it.
+          </p>
+        </div>
+        <div class="reason">
+          <span class="reason-num">04</span>
+          <p class="reason-txt">
+            The <strong>trust</strong> you give so freely, and so carefully at
+            the same time.
+          </p>
+        </div>
+        <div class="reason">
+          <span class="reason-num">05</span>
+          <p class="reason-txt">
+            Your <strong>voice</strong> — it's the sound I want to fall asleep
+            to every night.
+          </p>
+        </div>
+        <div class="reason">
+          <span class="reason-num">06</span>
+          <p class="reason-txt">
+            Because <strong>loving you</strong> is the easiest, most certain
+            thing I have ever done.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ S5: INTERACTIVE WISH ═══ -->
+    <section id="s5">
+      <div class="wish-center">
+        <h2 class="wish-heading reveal">Make a wish, my love</h2>
+        <p class="wish-sub reveal">tap the cake to send it to the stars</p>
+
+        <div class="cake" id="cake" onclick="makeCakeWish(event)">🎂</div>
+        <p class="wish-instruction">tap to make a wish</p>
+        <p class="sparkle-count" id="wishCount"></p>
+        <p class="final-msg" id="finalMsg">Your wishes are on their way 🌠</p>
+      </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer
+      style="
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        padding: 60px 24px;
+        background: var(--deepNight);
+      "
+    >
+      <div class="gold-divider">
+        <div class="gdl"></div>
+        <div class="gdd"></div>
+        <div class="gdr"></div>
+      </div>
+      <p
+        style="
+          font-family: &quot;Pinyon Script&quot;, cursive;
+          font-size: 2.2rem;
+          color: var(--gold);
+          margin-bottom: 12px;
+        "
+      >
+        Aditi
+      </p>
+      <p
+        style="
+          font-size: 0.7rem;
+          letter-spacing: 0.4em;
+          text-transform: uppercase;
+          color: rgba(253, 248, 240, 0.2);
+        "
+      >
+        written in starlight · sealed with love · yours, always
+      </p>
+    </footer>
+
+    <script>
+      /* ── CURSOR ── */
+      const cur = document.getElementById("cur");
+      const dot = cur.querySelector(".dot");
+      const cring = document.getElementById("cring");
+      let mx = 0,
+        my = 0,
+        rx = 0,
+        ry = 0;
+      document.addEventListener("mousemove", (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+        dot.style.left = mx + "px";
+        dot.style.top = my + "px";
+      });
+      (function animC() {
+        rx += (mx - rx) * 0.1;
+        ry += (my - ry) * 0.1;
+        cring.style.left = rx + "px";
+        cring.style.top = ry + "px";
+        requestAnimationFrame(animC);
+      })();
+
+      /* ── DATE ── */
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      const d = new Date();
+      document.getElementById("todayDate").textContent =
+        months[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+
+      /* ── LOADER ── */
+      window.addEventListener("load", () => {
+        setTimeout(
+          () => document.getElementById("loader").classList.add("out"),
+          1400,
+        );
+      });
+
+      /* ── BG CANVAS: floating rose petals + stars ── */
+      const bg = document.getElementById("bgCanvas");
+      const bgx = bg.getContext("2d");
+      function resizeBg() {
+        bg.width = window.innerWidth;
+        bg.height = window.innerHeight;
+      }
+      resizeBg();
+      window.addEventListener("resize", resizeBg);
+
+      const petals = [];
+      const stars = [];
+      for (let i = 0; i < 35; i++)
+        petals.push({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          size: 4 + Math.random() * 8,
+          speedX: (Math.random() - 0.5) * 0.6,
+          speedY: 0.4 + Math.random() * 0.8,
+          rot: Math.random() * 360,
+          rotSpeed: (Math.random() - 0.5) * 1.5,
+          alpha: Math.random() * 0.5 + 0.15,
+          color: Math.random() > 0.5 ? "rgba(181,41,63," : "rgba(212,168,67,",
+        });
+      for (let i = 0; i < 120; i++)
+        stars.push({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          r: 0.5 + Math.random() * 1.2,
+          alpha: Math.random(),
+          speed: 0.003 + Math.random() * 0.008,
+          phase: Math.random() * Math.PI * 2,
+        });
+      let tick = 0;
+      function bgLoop() {
+        bgx.clearRect(0, 0, bg.width, bg.height);
+        tick += 0.016;
+        // stars twinkle
+        stars.forEach((s) => {
+          const a =
+            0.3 + 0.7 * (0.5 + 0.5 * Math.sin(tick * s.speed * 60 + s.phase));
+          bgx.beginPath();
+          bgx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          bgx.fillStyle = `rgba(253,248,240,${a * 0.5})`;
+          bgx.fill();
+        });
+        // petals fall
+        petals.forEach((p) => {
+          p.x += p.speedX + Math.sin(tick * 0.8 + p.y * 0.01) * 0.3;
+          p.y += p.speedY;
+          p.rot += p.rotSpeed;
+          if (p.y > bg.height + 20) {
+            p.y = -20;
+            p.x = Math.random() * bg.width;
+          }
+          if (p.x < -20) p.x = bg.width + 20;
+          if (p.x > bg.width + 20) p.x = -20;
+          bgx.save();
+          bgx.translate(p.x, p.y);
+          bgx.rotate((p.rot * Math.PI) / 180);
+          bgx.globalAlpha = p.alpha * 0.6;
+          bgx.beginPath();
+          bgx.ellipse(0, 0, p.size * 0.6, p.size, 0, 0, Math.PI * 2);
+          bgx.fillStyle = p.color + p.alpha + ")";
+          bgx.fill();
+          bgx.restore();
+        });
+        requestAnimationFrame(bgLoop);
+      }
+      bgLoop();
+
+      /* ── FX CANVAS: fireworks / bursts ── */
+      const fx = document.getElementById("fxCanvas");
+      const fxx = fx.getContext("2d");
+      function resizeFx() {
+        fx.width = window.innerWidth;
+        fx.height = window.innerHeight;
+      }
+      resizeFx();
+      window.addEventListener("resize", resizeFx);
+
+      let particles = [];
+      const palette = [
+        "#fdf8f0",
+        "#d4a843",
+        "#b5293f",
+        "#f2c4cc",
+        "#f5e6b8",
+        "#fff",
+      ];
+      class Particle {
+        constructor(x, y, burst) {
+          this.x = x;
+          this.y = y;
+          const ang = Math.random() * Math.PI * 2;
+          const spd = burst ? 2 + Math.random() * 7 : 1 + Math.random() * 3;
+          this.vx = Math.cos(ang) * spd;
+          this.vy = Math.sin(ang) * spd - (burst ? 2 : 0);
+          this.alpha = 1;
+          this.r = burst ? 1.5 + Math.random() * 2.5 : 1 + Math.random() * 1.5;
+          this.color = palette[Math.floor(Math.random() * palette.length)];
+          this.decay = burst
+            ? 0.015 + Math.random() * 0.02
+            : 0.008 + Math.random() * 0.015;
+          this.gravity = 0.06;
+        }
+        step() {
+          this.x += this.vx;
+          this.y += this.vy;
+          this.vy += this.gravity;
+          this.vx *= 0.98;
+          this.alpha -= this.decay;
+        }
+        draw() {
+          fxx.save();
+          fxx.globalAlpha = Math.max(0, this.alpha);
+          fxx.fillStyle = this.color;
+          fxx.beginPath();
+          fxx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+          fxx.fill();
+          fxx.restore();
+        }
+      }
+      function burst(x, y, count = 70) {
+        for (let i = 0; i < count; i++)
+          particles.push(new Particle(x, y, true));
+      }
+      function fxLoop() {
+        fxx.clearRect(0, 0, fx.width, fx.height);
+        particles = particles.filter((p) => p.alpha > 0);
+        particles.forEach((p) => {
+          p.step();
+          p.draw();
+        });
+        requestAnimationFrame(fxLoop);
+      }
+      fxLoop();
+
+      /* ── AMBIENT SPARKLE on MOVE ── */
+      let sparkTimer = 0;
+      document.addEventListener("mousemove", (e) => {
+        if (++sparkTimer % 4 === 0 && Math.random() > 0.5) {
+          for (let i = 0; i < 3; i++)
+            particles.push(new Particle(e.clientX, e.clientY, false));
+        }
+      });
+
+      /* ── CLICK BURST ── */
+      document.addEventListener("click", (e) => {
+        if (e.target.id === "cake") return;
+        burst(e.clientX, e.clientY, 45);
+        spawnHearts(e.clientX, e.clientY, 3);
+      });
+
+      /* ── FLY HEARTS ── */
+      function spawnHearts(x, y, n = 5) {
+        const h = ["💕", "🌹", "❤️", "✨", "💖", "🌸"];
+        for (let i = 0; i < n; i++) {
+          const el = document.createElement("div");
+          el.className = "fly-heart";
+          el.textContent = h[Math.floor(Math.random() * h.length)];
+          const dx = -60 + Math.random() * 120;
+          const dy = -100 - Math.random() * 80;
+          el.style.cssText = `left:${x}px;top:${y}px;--dx:${dx}px;--dy:${dy}px;animation-delay:${i * 0.07}s`;
+          document.body.appendChild(el);
+          setTimeout(() => el.remove(), 1600);
+        }
+      }
+
+      /* ── SCROLL REVEAL ── */
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              // stagger children with .reason class
+              e.target.querySelectorAll &&
+                e.target.querySelectorAll(".reason").forEach((r, i) => {
+                  setTimeout(() => r.classList.add("visible"), i * 120);
+                });
+            }
+          });
+        },
+        { threshold: 0.15 },
+      );
+      document
+        .querySelectorAll(".reveal,.reason")
+        .forEach((el) => obs.observe(el));
+
+      /* ── CAKE WISH ── */
+      let wishCount = 0;
+      const msgs = [
+        "One wish sent! 🌠",
+        "Two wishes sailing... 💫",
+        "Three! The stars are listening ✨",
+        "Four wishes — they can hear you 🌟",
+        "Five! Your heart is heard, my love 💖",
+        "Six wishes, each more beautiful than the last 🌸",
+        "Seven — you deserve every single one 🌙",
+        "Eight wishes, infinite love 🌹",
+        "Nine! The universe is smiling 💕",
+        "Ten wishes — and all of them: you 🎆",
+      ];
+
+      function makeCakeWish(e) {
+        wishCount++;
+        burst(e.clientX, e.clientY, 90);
+        spawnHearts(e.clientX, e.clientY, 6);
+        const wc = document.getElementById("wishCount");
+        wc.textContent = msgs[Math.min(wishCount - 1, msgs.length - 1)];
+        document.getElementById("cake").style.transform = "scale(.88)";
+        setTimeout(
+          () => (document.getElementById("cake").style.transform = ""),
+          250,
+        );
+        if (wishCount >= 5) {
+          document.getElementById("finalMsg").classList.add("show");
+          launchBigFireworks();
+        }
+      }
+      function launchBigFireworks() {
+        let n = 0;
+        const iv = setInterval(() => {
+          burst(
+            80 + Math.random() * (window.innerWidth - 160),
+            60 + Math.random() * (window.innerHeight * 0.6),
+            110,
+          );
+          if (++n >= 16) clearInterval(iv);
+        }, 200);
+      }
+
+      /* ── AUTO-FIREWORKS after 5s ── */
+      setTimeout(() => {
+        burst(window.innerWidth * 0.25, window.innerHeight * 0.3, 60);
+        burst(window.innerWidth * 0.75, window.innerHeight * 0.25, 60);
+      }, 5000);
+      setTimeout(() => {
+        burst(window.innerWidth * 0.5, window.innerHeight * 0.2, 80);
+      }, 5600);
+    </script>
+  </body>
+</html>
